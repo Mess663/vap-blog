@@ -4,3 +4,4 @@ ADD . /home/git/www/blog
 RUN go build .
 EXPOSE 8080
 ENTRYPOINT ["./blog"]
+CMD ["deploy.sh"]
