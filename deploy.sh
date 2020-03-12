@@ -1,4 +1,3 @@
 #!/bin/sh
 echo 'start deploy my blog'
-go build main.go
-./main
+nohup go run main.go &
