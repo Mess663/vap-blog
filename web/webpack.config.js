@@ -49,15 +49,15 @@ module.exports = {
       }
     },
     minimizer: [
-      // new TerserPlugin({
-      //   test: /\.js(\?.*)?$/i,                
-      //   exclude: /\/excludes/,
-      //   terserOptions: {
-      //     compress: {
-      //       drop_console: true,
-      //     },
-      //   },
-      // }),
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,                
+        exclude: /\/excludes/,
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
+      }),
       new OptimizeCSSAssetsPlugin({})
     ],
   },
