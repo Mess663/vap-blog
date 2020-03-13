@@ -1,12 +1,10 @@
 #!/bin/sh
-echo 'start deploy my blog'
+echo -e "\033[41;36m start deploy my blog \033[0m"
 
-pwd
-
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm i node
-nvm use node
+echo `pwd`
+cd ~/www/blog/web
+npm i
+npm run build
+echo -e "\033[41;36m 前端代码构建完成 \033[0m"
 
 nohup go run main.go &
