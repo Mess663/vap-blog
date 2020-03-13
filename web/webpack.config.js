@@ -30,7 +30,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: `static/[name].[${isPro ? 'chunkhash:6' : 'hash'}].js`,
-    publicPath: isPro ? 'http://localhost:9000/static' : ''
+    publicPath: isPro ? 'http://207.148.99.103:8080' : ''
   },
 
   optimization: {
