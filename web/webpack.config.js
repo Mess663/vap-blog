@@ -157,13 +157,13 @@ module.exports = {
       filename: 'index.html',
       template: 'src/pages/index/index.html',
       // 很奇怪，加了vendor后，就可以在devServer上引入js了
-      chunks: isPro ? ['index'] : ['vendor', 'index'],
+      chunks: ['runtime', 'vendor', 'index'],
       minify: htmlMinify,
     }),
     new HtmlWebpackPlugin({
       filename: 'article.html',
       template: 'src/pages/article/index.html',
-      chunks:isPro ? ['article'] : ['vendor', 'article'],
+      chunks: ['runtime', 'vendor', 'article'],
       minify: htmlMinify,
     }), 
     new MiniCssExtractPlugin({
