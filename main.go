@@ -50,6 +50,6 @@ import (
 )
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("~/www/dist")))
+	http.Handle("/", http.FileServer(http.Dir("~/www/web/dist")))
 	http.ListenAndServe(":8080", nil)
 }
