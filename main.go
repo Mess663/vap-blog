@@ -1,10 +1,40 @@
 package main
 
 import (
+	"html/template"
+	"log"
 	"net/http"
 )
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("./web/dist")))
-	http.ListenAndServe(":8080", nil)
+	mux := http.NewServeMux()
+
+	fileServe := &staticFileHandeler{"TextHandler !"}
+	mux.Handle("/static/", fileServe)
+	mux.Handle("/", &indexHandler{})
+
+	err := http.ListenAndServe(":8080", mux)
+
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
+}
+
+type staticFileHandeler struct {
+	responseText string
+}
+
+func (th *staticFileHandeler) ServeHTTP(w http.ResponseWriter, r *http.Request){
+	http.StripPrefix("/static/",
+		http.FileServer(http.Dir("./web/dist/static"))).ServeHTTP(w, r)
+}
+
+type indexHandler struct {}
+
+func (ih *indexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	t1, err := template.ParseFiles("./web/dist/index.html")
+	if err != nil {
+		panic(err)
+	}
+	t1.Execute(w, "hello world")
 }
