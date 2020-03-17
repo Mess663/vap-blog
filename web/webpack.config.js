@@ -12,21 +12,14 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 const { ENV } = process.env;
 const isPro = ENV === 'production';
+const entry = {
+  'index': 'src/pages/index/index.js',
+  'article': 'src/pages/article/index.js',
+  'admin': 'src/pages/admin/index.js'
+}
 
-const htmlMinify = isPro ? {
-  removeAttributeQuotes: true,
-  removeComments: true,
-  collapseWhitespace: true,
-  removeScriptTypeAttributes: true,
-  removeStyleLinkTypeAttributes: true
-} : {}
-
-module.exports = {
-  entry: {
-    'index': 'src/pages/index/index.js',
-    'article': 'src/pages/article/index.js',
-    'admin': 'src/pages/admin/index.js'
-  },
+module.exports =  {
+  entry,
 
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -72,7 +65,7 @@ module.exports = {
   },
 
   mode: ENV,
-  devtool: isPro ? 'source-map' : 'cheap-module-eval-source-map',
+  devtool: isPro ? '' : 'cheap-module-eval-source-map',
 
   module: {
     rules: [
@@ -106,26 +99,28 @@ module.exports = {
       //     { loader: 'less-loader', options: { sourceMap: !isPro } }
       //   ]
       // },
-      // {
-      //   test: /pages(\\|\/)article(\\|\/).*\.(css|less)$/,
-      //   loader: [
-      //     MiniCssExtractPlugin.loader,
-      //     { loader: 'css-loader', options: { sourceMap: !isPro } },
-      //     { loader: 'less-loader', options: { sourceMap: !isPro } }
-      //   ]
-      // },
       {
-        test: /.(css|less)$/,
+        test: /\.less$/,
         loader: [
-          MiniCssExtractPlugin.loader,
+          isPro ? MiniCssExtractPlugin.loader : 'style-loader' ,
           { loader: 'css-loader', options: { sourceMap: !isPro } },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                require('autoprefixer'),
+                ...(isPro ? [require('cssnano')] : [])
+              ],
+              sourceMap: isPro ? false : 'inline'
+            }
+          },
           { loader: 'less-loader', options: { sourceMap: !isPro } }
         ]
       },
       {
         test: /\.html$/,
         loader: 'html-loader'
-    },
+      },
     ]
   },
 
@@ -161,25 +156,7 @@ module.exports = {
       // 允许 HappyPack 输出日志
       verbose: true
     }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'src/pages/index/index.html',
-      // 很奇怪，加了vendor后，就可以在devServer上引入js了
-      chunks: ['runtime', 'vendor', 'index'],
-      minify: htmlMinify,
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'article.html',
-      template: 'src/pages/article/index.html',
-      chunks: ['runtime', 'vendor', 'article'],
-      minify: htmlMinify,
-    }), 
-    new HtmlWebpackPlugin({
-      filename: 'admin.html',
-      template: 'src/pages/admin/index.html',
-      chunks: ['runtime', 'vendor', 'admin'],
-      minify: htmlMinify,
-    }),
+    ...getWebpackPlugins(Object.keys(entry)),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
@@ -200,4 +177,21 @@ module.exports = {
     ])
   ]
 };
+
+function getWebpackPlugins(entrys) {
+  return entrys.map(item => new HtmlWebpackPlugin({
+    filename: `${item}.html`,
+    template: `src/pages/${item}/index.html`,
+    // 很奇怪，加了vendor后，就可以在devServer上引入js了
+    chunks: ['runtime', 'vendor', item],
+    minify: isPro ? {
+      removeAttributeQuotes: true,
+      removeComments: true,
+      collapseWhitespace: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true
+    } : {},
+  }))
+}
+
 
