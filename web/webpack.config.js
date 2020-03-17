@@ -24,7 +24,8 @@ const htmlMinify = isPro ? {
 module.exports = {
   entry: {
     'index': 'src/pages/index/index.js',
-    'article': 'src/pages/article/index.js'
+    'article': 'src/pages/article/index.js',
+    'admin': 'src/pages/admin/index.js'
   },
 
   output: {
@@ -97,16 +98,24 @@ module.exports = {
           }
         ]
       },
+      // {
+      //   test: /pages(\\|\/)index(\\|\/).*\.(css|less)$/,
+      //   loader: [
+      //     MiniCssExtractPlugin.loader,
+      //     { loader: 'css-loader', options: { sourceMap: !isPro } },
+      //     { loader: 'less-loader', options: { sourceMap: !isPro } }
+      //   ]
+      // },
+      // {
+      //   test: /pages(\\|\/)article(\\|\/).*\.(css|less)$/,
+      //   loader: [
+      //     MiniCssExtractPlugin.loader,
+      //     { loader: 'css-loader', options: { sourceMap: !isPro } },
+      //     { loader: 'less-loader', options: { sourceMap: !isPro } }
+      //   ]
+      // },
       {
-        test: /pages(\\|\/)index(\\|\/).*\.(css|less)$/,
-        loader: [
-          MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { sourceMap: !isPro } },
-          { loader: 'less-loader', options: { sourceMap: !isPro } }
-        ]
-      },
-      {
-        test: /pages(\\|\/)article(\\|\/).*\.(css|less)$/,
+        test: /.(css|less)$/,
         loader: [
           MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { sourceMap: !isPro } },
@@ -165,6 +174,12 @@ module.exports = {
       chunks: ['runtime', 'vendor', 'article'],
       minify: htmlMinify,
     }), 
+    new HtmlWebpackPlugin({
+      filename: 'admin.html',
+      template: 'src/pages/admin/index.html',
+      chunks: ['runtime', 'vendor', 'admin'],
+      minify: htmlMinify,
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
