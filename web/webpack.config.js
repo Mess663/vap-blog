@@ -18,7 +18,7 @@ const entry = {
   'admin': 'src/pages/admin/index.js'
 }
 
-module.exports =  {
+module.exports = {
   entry,
 
   output: {
@@ -31,6 +31,7 @@ module.exports =  {
     namedChunks: true,
     runtimeChunk: 'single',
     splitChunks: {
+      chunks: 'all',
       cacheGroups: {
           vendor: { // 抽离第三方插件
               test: /node_modules/, // 指定是node_modules下的第三方包
@@ -182,7 +183,8 @@ function getWebpackPlugins(entrys) {
   return entrys.map(item => new HtmlWebpackPlugin({
     filename: `${item}.html`,
     template: `src/pages/${item}/index.html`,
-    // 很奇怪，加了vendor后，就可以在devServer上引入js了
+    // 问题：很奇怪，加了vendor后，就可以在devServer上引入js了
+    // 解答：https://segmentfault.com/q/1010000022040381
     chunks: ['runtime', 'vendor', item],
     minify: isPro ? {
       removeAttributeQuotes: true,

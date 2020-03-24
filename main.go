@@ -1,19 +1,22 @@
 package main
 
 import (
-	"html/template"
+	"blog/server"
 	"log"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	mux := http.NewServeMux()
+	// 判断系统输入
+	//fmt.Println(os.Args[1], os.Args[2])
 
-	fileServe := &staticFileHandeler{"TextHandler !"}
-	mux.Handle("/static/", fileServe)
-	mux.Handle("/article", &articleHandler{})
-	mux.Handle("/admin", &adminHandler{})
-	mux.Handle("/", &indexHandler{})
+	mux := http.NewServeMux()
+	mux.Handle("/static/", &server.StaticFileHandeler{})
+	mux.Handle("/article", &server.ServerHandler{"./web/dist/article.html"})
+	mux.Handle("/admin", &server.ServerHandler{"./web/dist/admin.html"})
+	mux.Handle("/", &server.ServerHandler{"./web/dist/index.html"})
 
 
 	err := http.ListenAndServe(":8080", mux)
@@ -21,43 +24,22 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+
+	//Article := modal.ArticleTable {
+	//	Host: "207.148.99.103:3306",
+	//	User: "vaporSpace",
+	//	Password: "18675270821",
+	//}
+	//db, err := Article.StartDb()
+	//checkErr(err)
+	//defer  db.Close()
+	//
+	//_, err = Article.DeleteItem(3)
+	//checkErr(err)
 }
 
-type staticFileHandeler struct {
-	responseText string
-}
-
-func (th *staticFileHandeler) ServeHTTP(w http.ResponseWriter, r *http.Request){
-	http.StripPrefix("/static/",
-		http.FileServer(http.Dir("./web/dist/static"))).ServeHTTP(w, r)
-}
-
-type indexHandler struct {}
-
-func (ih *indexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t1, err := template.ParseFiles("./web/dist/index.html")
+func checkErr(err error) {
 	if err != nil {
-		panic(err)
+		log.Printf("mySQL error: %v", err)
 	}
-	t1.Execute(w, "hello world")
-}
-
-type adminHandler struct {}
-
-func (ih *adminHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t1, err := template.ParseFiles("./web/dist/admin.html")
-	if err != nil {
-		panic(err)
-	}
-	t1.Execute(w, "hello world")
-}
-
-type articleHandler struct {}
-
-func (ih *articleHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t1, err := template.ParseFiles("./web/dist/article.html")
-	if err != nil {
-		panic(err)
-	}
-	t1.Execute(w, "hello world")
 }
