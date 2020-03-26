@@ -23,7 +23,7 @@ type Data struct {
 
 func submitArticle(mySqlIp string) http.HandlerFunc  {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		s, _ := ioutil.ReadAll(r.Body)
+		s, _ := ioutil.ReadAll(request.Body)
 		var reqBody map[string]string
 		json.Unmarshal(s, &reqBody)
 		title := reqBody["title"]
@@ -39,7 +39,7 @@ func submitArticle(mySqlIp string) http.HandlerFunc  {
 			data = Data{1}
 		}
 
-		json.NewEncoder(w).Encode(data)
+		json.NewEncoder(writer).Encode(data)
 	}
 }
 

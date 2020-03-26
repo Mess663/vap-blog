@@ -43,7 +43,6 @@ func (t *ArticleTable) GetArticles(limit int) ([]Article, error) {
 
 	for rows.Next() {
 		var id int
-
 		var title string
 		var content string
 		err = rows.Scan(&id, &title, &content)
@@ -52,10 +51,11 @@ func (t *ArticleTable) GetArticles(limit int) ([]Article, error) {
 		}
 
 		article := Article{
-			Id:      id,
-			Title:   title,
-			Content: content,
+			id,
+			title,
+			content,
 		}
+
 		articleList = append(articleList, article)
 	}
 

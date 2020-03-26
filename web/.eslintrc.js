@@ -9,6 +9,9 @@ module.exports = {
     ENV: 'readonly',
     ENV_IS_PRO: 'readonly',
   },
+  plugins: [
+    "html"
+  ],
   rules: {
     'generator-star-spacing': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

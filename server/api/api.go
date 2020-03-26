@@ -15,7 +15,7 @@ type routes []route
 
 var ApiRoutes = routes{
 	route{
-		"Index",
+		"PostArticle",
 		"POST",
 		"/article",
 		submitArticle,

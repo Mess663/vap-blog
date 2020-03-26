@@ -17,7 +17,13 @@ func NewRouter() *mux.Router {
 			Methods("GET").
 			Path(route.Pattern).
 			Name(route.Name).
-			Handler(route.HandlerFunc(route.Template))
+			Handler(route.HandlerFunc(route.Template, "207.148.99.103:3306"))
+
+		//router.
+		//	Methods("GET").
+		//	Path(fmt.Sprintf("/test%s", route.Pattern)).
+		//	Name(route.Name).
+		//	Handler(route.HandlerFunc(route.Template, "207.148.99.103:3306"))
 	}
 
 	// 静态资源
@@ -27,20 +33,19 @@ func NewRouter() *mux.Router {
 
 	// api
 	for _, route := range api.ApiRoutes {
+		// production
 		router.
 			Methods(route.Method).
 			Path(fmt.Sprintf("/api%s", route.Pattern)).
 			Name(route.Name).
 			Handler(route.HandlerFunc("207.148.99.103:3306"))
-	}
 
-	// test api
-	for _, route := range api.ApiRoutes {
-		router.
-			Methods(route.Method).
-			Path(fmt.Sprintf("/test/api%s", route.Pattern)).
-			Name(route.Name).
-			Handler(route.HandlerFunc("0.0.0.0:3306"))
+		// develop
+		//router.
+		//	Methods(route.Method).
+		//	Path(fmt.Sprintf("/test/api%s", route.Pattern)).
+		//	Name(route.Name).
+		//	Handler(route.HandlerFunc("0.0.0.0:3306"))
 	}
 
 	return router

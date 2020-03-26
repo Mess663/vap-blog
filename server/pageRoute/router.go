@@ -10,7 +10,7 @@ type route struct {
 	Name        string
 	Pattern     string
 	Template string
-	HandlerFunc func(template string) http.HandlerFunc
+	HandlerFunc func(template string, mySqlIp string) http.HandlerFunc
 }
 
 var webStaticPath, _ = filepath.Abs("web/dist")
@@ -22,18 +22,12 @@ var PageRoutes = routes{
 		"Index",
 		"/",
 		StaticPath("index.html"),
-		commonHandler,
+		IndexHandler,
 	},
 	route{
 		"Admin",
 		"/admin",
 		StaticPath("admin.html"),
-		commonHandler,
-	},
-	route{
-		"Article",
-		"/article/{todoId}",
-		StaticPath("article.html"),
 		commonHandler,
 	},
 	route{
