@@ -60,7 +60,7 @@ module.exports = {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 9000,
-    inline: true, //实时刷新
+    inline: true, // 实时刷新
     overlay: true,
     hot: true
   },
@@ -133,6 +133,9 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      ENV_IS_PRO: isPro
+    }),
     new HappyPack({
       // 用id来标识 happypack处理那里类文件
       id: 'happyBabel',

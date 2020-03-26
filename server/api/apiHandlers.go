@@ -21,29 +21,31 @@ type Data struct {
 	status int
 }
 
-func submitArticle(w http.ResponseWriter, r *http.Request)  {
-	s, _ := ioutil.ReadAll(r.Body)
-	var reqBody map[string]string
-	json.Unmarshal(s, &reqBody)
-	title := reqBody["title"]
-	content := reqBody["content"]
+func submitArticle(mySqlIp string) http.HandlerFunc  {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		s, _ := ioutil.ReadAll(r.Body)
+		var reqBody map[string]string
+		json.Unmarshal(s, &reqBody)
+		title := reqBody["title"]
+		content := reqBody["content"]
 
-	_, err := insertArticle(title, content)
-	checkErr(err)
+		_, err := insertArticle(title, content, mySqlIp)
+		checkErr(err)
 
-	var data Data
-	if err == nil {
-		data = Data{0}
-	} else {
-		data = Data{1}
+		var data Data
+		if err == nil {
+			data = Data{0}
+		} else {
+			data = Data{1}
+		}
+
+		json.NewEncoder(w).Encode(data)
 	}
-
-	json.NewEncoder(w).Encode(data)
 }
 
-func insertArticle(title string, content string) (sql.Result, error) {
+func insertArticle(title string, content string, mySqlIp string) (sql.Result, error) {
 	Article := modal.ArticleTable {
-		Host: "207.148.99.103:3306",
+		Host: mySqlIp,
 		User: "vaporSpace",
 		Password: "18675270821",
 	}

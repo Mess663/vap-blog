@@ -1,17 +1,17 @@
-import './index.less'
+import './index.less';
+import { apiGet } from 'src/common/request/index';
 
-import axios from 'axios'
+document.querySelector('.btn').addEventListener('click', async () => {
+  try {
+    const title = document.querySelector('.title-input').value;
+    const content = document.querySelector( '.content-input').innerText;
 
-document.querySelector('.btn').addEventListener('click', () => {
-  const title = document.querySelector('.title-input').value
-  const content = document.querySelector('.content-input').innerText
+    await apiGet('/api/article', {title, content })
 
-  axios.post('/api/article', {title, content })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-})
+    alert('上传成功～')
+  } catch (error) {
+    console.error(error)
+    alert('上传失败')
+  }
+});
 

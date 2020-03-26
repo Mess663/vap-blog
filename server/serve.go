@@ -3,6 +3,7 @@ package server
 import (
 	"blog/server/api"
 	"blog/server/pageRoute"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -28,9 +29,18 @@ func NewRouter() *mux.Router {
 	for _, route := range api.ApiRoutes {
 		router.
 			Methods(route.Method).
-			Path(route.Pattern).
+			Path(fmt.Sprintf("/api%s", route.Pattern)).
 			Name(route.Name).
-			Handler(route.HandlerFunc)
+			Handler(route.HandlerFunc("207.148.99.103:3306"))
+	}
+
+	// test api
+	for _, route := range api.ApiRoutes {
+		router.
+			Methods(route.Method).
+			Path(fmt.Sprintf("/test/api%s", route.Pattern)).
+			Name(route.Name).
+			Handler(route.HandlerFunc("0.0.0.0:3306"))
 	}
 
 	return router

@@ -8,7 +8,7 @@ type route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc http.HandlerFunc
+	HandlerFunc func(template string) http.HandlerFunc
 }
 
 type routes []route
@@ -17,7 +17,7 @@ var ApiRoutes = routes{
 	route{
 		"Index",
 		"POST",
-		"/api/article",
+		"/article",
 		submitArticle,
 	},
 }
