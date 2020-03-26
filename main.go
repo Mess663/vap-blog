@@ -2,28 +2,32 @@ package main
 
 import (
 	"blog/server"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	// 判断系统输入
 	//fmt.Println(os.Args[1], os.Args[2])
 
-	mux := http.NewServeMux()
-	mux.Handle("/static/", &server.StaticFileHandeler{})
-	mux.Handle("/article", &server.ServerHandler{"./web/dist/article.html"})
-	mux.Handle("/admin", &server.ServerHandler{"./web/dist/admin.html"})
-	mux.Handle("/", &server.ServerHandler{"./web/dist/index.html"})
+	router := server.NewRouter()
 
+	log.Fatal(http.ListenAndServe(":8081", router))
 
-	err := http.ListenAndServe(":8080", mux)
-
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	//mux := http.NewServeMux()
+	//mux.Handle("/api", &server.ApiPostArticle{})
+	//mux.Handle("/static/", &server.StaticFileHandeler{})
+	//mux.Handle("/article", &server.ServerHandler{"./web/dist/article.html"})
+	//mux.Handle("/admin", &server.ServerHandler{"./web/dist/admin.html"})
+	//mux.Handle("/", &server.ServerHandler{"./web/dist/index.html"})
+	//
+	//
+	//err := http.ListenAndServe(":8080", mux)
+	//
+	//if err != nil {
+	//	log.Fatal("ListenAndServe: ", err)
+	//}
 
 	//Article := modal.ArticleTable {
 	//	Host: "207.148.99.103:3306",

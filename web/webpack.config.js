@@ -42,7 +42,7 @@ module.exports = {
           }
       }
     },
-    minimizer: [
+    minimizer: isPro ? [
       new TerserPlugin({
         test: /\.js(\?.*)?$/i,                
         exclude: /\/excludes/,
@@ -53,7 +53,7 @@ module.exports = {
         },
       }),
       new OptimizeCSSAssetsPlugin({})
-    ],
+    ] : [],
   },
 
   devServer: {
@@ -115,7 +115,7 @@ module.exports = {
               sourceMap: isPro ? false : 'inline'
             }
           },
-          { loader: 'less-loader', options: { sourceMap: !isPro } }
+          { loader: 'less-loader', options: { sourceMap: !isPro, import: true, } }
         ]
       },
       {
@@ -126,6 +126,7 @@ module.exports = {
   },
 
   resolve: {
+    modules: ['src', 'node_modules'],
     alias: {
       src: path.resolve(__dirname, 'src/'),
     }
