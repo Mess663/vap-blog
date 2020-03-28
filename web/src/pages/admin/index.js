@@ -1,17 +1,27 @@
 import './index.less';
-import { apiGet } from 'src/common/request/index';
+import { apiPost } from 'src/common/request/index';
+import $ from 'jquery'
 
-document.querySelector('.btn').addEventListener('click', async () => {
-  try {
-    const title = document.querySelector('.title-input').value;
-    const content = document.querySelector( '.content-input').innerText;
+const btn = $('.btn')
+let isSubmiting = false
 
-    await apiGet('/api/article', {title, content })
+btn.click(() => {
+  if (isSubmiting) return
 
-    alert('上传成功～')
-  } catch (error) {
-    console.error(error)
-    alert('上传失败')
-  }
-});
+  const title = document.querySelector('.title-input').value;
+  const content = document.querySelector( '.content-input').innerText;
+
+  btn.toggleClass()
+  isSubmiting = true
+  
+  apiPost('/api/article', {title, content })
+    .then(() => {
+      isSubmiting = false
+    })
+    .catch((err) => {
+      isSubmiting = false
+      console.error(err)
+      alert('上传出错')
+    })
+})
 

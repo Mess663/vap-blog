@@ -3,8 +3,10 @@ package modal
 import (
 	"database/sql"
 	"fmt"
-
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"strings"
 )
 
 type ArticleTable struct {
@@ -45,7 +47,8 @@ func (t *ArticleTable) GetArticles(limit int) ([]Article, error) {
 		var id int
 		var title string
 		var content string
-		err = rows.Scan(&id, &title, &content)
+		var timeStamp string
+		err = rows.Scan(&id, &content,&title,  &timeStamp)
 		if err != nil {
 			return nil, err
 		}
@@ -54,12 +57,46 @@ func (t *ArticleTable) GetArticles(limit int) ([]Article, error) {
 			id,
 			title,
 			content,
+			strings.Split(timeStamp, " ")[0],
 		}
 
 		articleList = append(articleList, article)
 	}
 
 	return articleList, nil
+}
+
+func (t *ArticleTable) GetAticle(id string) (Article, error) {
+	rows, err := t.Db.Query("SELECT * FROM articles where id=?", id)
+	if err != nil {
+		return Article{}, err
+	}
+
+	var a Article
+	for rows.Next() {
+		var id int
+		var title string
+		var content string
+		var timeStamp string
+		err = rows.Scan(&id, &content,&title,  &timeStamp)
+		if err != nil {
+			return Article{}, err
+		}
+
+		htmlFlags := html.CommonFlags | html.HrefTargetBlank
+		opts := html.RendererOptions{Flags: htmlFlags}
+		renderer := html.NewRenderer(opts)
+
+		md := []byte(content)
+		html := markdown.ToHTML(md, nil, renderer)
+
+		a.Id = id
+		a.Title = title
+		a.Content = string(html)
+		a.Time = strings.Split(timeStamp, " ")[0]
+	}
+
+	return a, nil
 }
 
 func (t *ArticleTable) DeleteItem(id int) (sql.Result, error) {

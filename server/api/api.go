@@ -8,7 +8,7 @@ type route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc func(template string) http.HandlerFunc
+	HandlerFunc func(template string, mySqlUser string) http.HandlerFunc
 }
 
 type routes []route

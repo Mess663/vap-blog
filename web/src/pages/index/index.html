@@ -7,16 +7,16 @@
 </head>
 <body>
   <header class="header">
-    <span class="header__name">VaporSpace</span>
+    <a href="/" class="header__name">VaporSpace</a>
     <a href="/" class="header__index">首页</a>
   </header>
 
   <div class="list">
-    {{range .Articles}}
-      <a href="/article/{{.Id}}" class="list-item">
+    {{range .}}
+      <a href="/article?id={{.Id}}" class="list-item">
         <h2 class="list-item__title">{{.Title}}</h2>
         <p class="list-item__desc">{{.Content}}</p>
-        <div class="list-item__time">June 1, 2019</div>
+        <div class="list-item__time">{{.Time}}</div>
       </a>
     {{end}}
   </div>

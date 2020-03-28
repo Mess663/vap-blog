@@ -1,10 +1,5 @@
 import axios from "axios"
 
-export const apiGet = (url = '', param = {}) => axios.get(getFinalUrl(url), param)
+export const apiGet = (url = '', param = {}) => axios.get(url, param)
 
-export const apiPost = (url = '', param = {}) => axios.post(getFinalUrl(url), param)
-
-function getFinalUrl(url) {
-  const retUrl = url.indexOf('/') === 0 ? url : `/${url}`
-  return ENV_IS_PRO ? retUrl : 'test' + retUrl
-}
+export const apiPost = (url = '', param = {}) => axios.post(url, param)

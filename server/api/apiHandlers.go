@@ -21,7 +21,7 @@ type Data struct {
 	status int
 }
 
-func submitArticle(mySqlIp string) http.HandlerFunc  {
+func submitArticle(mySqlIp string, mySqlUser string) http.HandlerFunc  {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		s, _ := ioutil.ReadAll(request.Body)
 		var reqBody map[string]string
@@ -29,7 +29,7 @@ func submitArticle(mySqlIp string) http.HandlerFunc  {
 		title := reqBody["title"]
 		content := reqBody["content"]
 
-		_, err := insertArticle(title, content, mySqlIp)
+		_, err := insertArticle(title, content, mySqlIp, mySqlUser)
 		checkErr(err)
 
 		var data Data
@@ -43,10 +43,10 @@ func submitArticle(mySqlIp string) http.HandlerFunc  {
 	}
 }
 
-func insertArticle(title string, content string, mySqlIp string) (sql.Result, error) {
+func insertArticle(title string, content string, mySqlIp string, mySqlUser string) (sql.Result, error) {
 	Article := modal.ArticleTable {
 		Host: mySqlIp,
-		User: "vaporSpace",
+		User: mySqlUser,
 		Password: "18675270821",
 	}
 	db, err := Article.StartDb()
