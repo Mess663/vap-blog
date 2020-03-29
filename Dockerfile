@@ -16,8 +16,10 @@ WORKDIR /blog
 
 RUN go build .
 
+ENV MYSQL_PSW=""
+
 EXPOSE 8080
-CMD ["nohup", "./blog", "&"]  
+CMD ["nohup", "./blog $MYSQL_PSW", "&"]
 
 
 

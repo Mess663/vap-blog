@@ -2,8 +2,10 @@ package api
 
 import (
 	"blog/modal"
+	"blog/utils"
 	"database/sql"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -18,36 +20,46 @@ type Todo struct {
 
 type Todos []Todo
 type Data struct {
-	status int
+	Status int `json:"status"`
+	Id int64 `json:"id"`
 }
 
-func submitArticle(mySqlIp string, mySqlUser string) http.HandlerFunc  {
+func submitArticle(mySqlConf modal.MysqlConf) http.HandlerFunc  {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		s, _ := ioutil.ReadAll(request.Body)
+		// 限制上传数据大小，以防恶意上传
+		s, error := ioutil.ReadAll(io.LimitReader(request.Body, 1048576))
+		utils.LogError(error, "submitArticle read body")
+		error = request.Body.Close();
+		utils.LogError(error, "submitArticle body close")
+
 		var reqBody map[string]string
 		json.Unmarshal(s, &reqBody)
 		title := reqBody["title"]
 		content := reqBody["content"]
 
-		_, err := insertArticle(title, content, mySqlIp, mySqlUser)
+		result, err := insertArticle(title, content, mySqlConf)
+		checkErr(err)
+
+		id, err:= result.LastInsertId()
 		checkErr(err)
 
 		var data Data
 		if err == nil {
-			data = Data{0}
+			data = Data{1, id}
 		} else {
-			data = Data{1}
+			data = Data{0, 0}
 		}
 
-		json.NewEncoder(writer).Encode(data)
+		error = json.NewEncoder(writer).Encode(data)
+		utils.LogError(error, "NewEncoder")
 	}
 }
 
-func insertArticle(title string, content string, mySqlIp string, mySqlUser string) (sql.Result, error) {
+func insertArticle(title string, content string, mySqlConf modal.MysqlConf) (sql.Result, error) {
 	Article := modal.ArticleTable {
-		Host: mySqlIp,
-		User: mySqlUser,
-		Password: "18675270821",
+		Ip: mySqlConf.Ip,
+		User: mySqlConf.User,
+		Password: mySqlConf.Password,
 	}
 	db, err := Article.StartDb()
 	checkErr(err)

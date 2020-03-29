@@ -1,6 +1,7 @@
 package api
 
 import (
+	"blog/modal"
 	"net/http"
 )
 
@@ -8,7 +9,7 @@ type route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc func(template string, mySqlUser string) http.HandlerFunc
+	HandlerFunc func(mySqlConf modal.MysqlConf) http.HandlerFunc
 }
 
 type routes []route

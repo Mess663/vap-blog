@@ -8,14 +8,14 @@ import (
 )
 
 type ArticleTable struct {
-	Host string
+	Ip string
 	User string
 	Password string
 	Db *sql.DB
 }
 
 func (t *ArticleTable) StartDb() (*sql.DB, error)  {
-	dataSourceName :=fmt.Sprintf("%s:%s@tcp(%s)/%s", t.User, t.Password, t.Host, "blog")
+	dataSourceName :=fmt.Sprintf("%s:%s@tcp(%s)/%s", t.User, t.Password, t.Ip, "blog")
 	DB, err := sql.Open("mysql", dataSourceName)
 	t.Db = DB
 	return DB, err
@@ -34,9 +34,9 @@ func (t *ArticleTable) UpdateItem(id int, title string, content string) (sql.Res
 	return t.Db.Exec("UPDATE articles SET title=?, content=? where id=?", title, content, id)
 }
 
-func (t *ArticleTable) GetArticles(limit int) ([]Article, error) {
+func (t *ArticleTable) GetArticles() ([]Article, error) {
 	var articleList []Article
-	rows, err :=  t.Db.Query("SELECT * FROM articles LIMIT ?", limit)
+	rows, err :=  t.Db.Query("SELECT * FROM articles")
 	if err != nil {
 		return nil, err
 	}

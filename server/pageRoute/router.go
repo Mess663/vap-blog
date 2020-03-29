@@ -1,6 +1,7 @@
 package pageRoute
 
 import (
+	"blog/modal"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -10,7 +11,7 @@ type route struct {
 	Name        string
 	Pattern     string
 	Template string
-	HandlerFunc func(template string, mySqlIp string, mySqlUser string) http.HandlerFunc
+	HandlerFunc func(template string, mySqlConf modal.MysqlConf) http.HandlerFunc
 }
 
 var webStaticPath, _ = filepath.Abs("web/dist")

@@ -6,3 +6,9 @@ type Article struct {
 	Content string
 	Time string
 }
+
+type MysqlConf struct {
+	Ip string
+	User string
+	Password string
+}
