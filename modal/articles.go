@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
 	"strings"
 )
 
@@ -83,16 +81,9 @@ func (t *ArticleTable) GetAticle(id string) (Article, error) {
 			return Article{}, err
 		}
 
-		htmlFlags := html.CommonFlags | html.HrefTargetBlank
-		opts := html.RendererOptions{Flags: htmlFlags}
-		renderer := html.NewRenderer(opts)
-
-		md := []byte(content)
-		html := markdown.ToHTML(md, nil, renderer)
-
 		a.Id = id
 		a.Title = title
-		a.Content = string(html)
+		a.Content = content
 		a.Time = strings.Split(timeStamp, " ")[0]
 	}
 

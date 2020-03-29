@@ -1,7 +1,10 @@
 import './index.less'
 
 import $ from 'jquery'
+import showdown from 'showdown'
 
-console.log($('.tem').text())
-$('article').html($('.tem').text())
+
+const converter = new showdown.Converter();
+console.log(converter.makeHtml($('.tem').text()))
+$('article').html(converter.makeHtml($('.tem').text()))
 // document.querySelector('article').appendChild(parser.parseFromString(temHtml, "text/xml"))
