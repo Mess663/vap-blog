@@ -21,4 +21,10 @@ var ApiRoutes = routes{
 		"/article",
 		submitArticle,
 	},
+	route{
+		"PostArticle",
+		"post",
+		"/isAdmin",
+		checkIsAdmin,
+	},
 }

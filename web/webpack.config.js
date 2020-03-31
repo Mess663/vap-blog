@@ -6,7 +6,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HappyPack = require('happypack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const os = require('os');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
@@ -162,6 +163,7 @@ module.exports = {
       verbose: true
     }),
     ...getWebpackPlugins(Object.keys(entry)),
+    new HtmlWebpackInlineSourcePlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
@@ -197,6 +199,7 @@ function getWebpackPlugins(entrys) {
       removeScriptTypeAttributes: true,
       removeStyleLinkTypeAttributes: true
     } : {},
+    // inlineSource: '.(css)$' 
   }))
 }
 
