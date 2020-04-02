@@ -16,8 +16,8 @@ WORKDIR /blog
 
 RUN go build .
 ARG MYSQL_PSW
-EXPOSE 8080
-CMD ["nohup", "./blog", "$MYSQL_PSW", "&"]
+EXPOSE 80
+CMD ["nohup", "./blog", "${MYSQL_PSW}", "&"]
 
 
 
