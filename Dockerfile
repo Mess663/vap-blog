@@ -15,7 +15,7 @@ COPY --from=noder /home/git/www/blog /blog
 WORKDIR /blog
 
 RUN go build .
-
+ARG MYSQL_PSW
 EXPOSE 8080
 CMD ["nohup", "./blog", "$MYSQL_PSW", "&"]
 
