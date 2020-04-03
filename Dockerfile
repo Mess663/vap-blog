@@ -16,7 +16,7 @@ WORKDIR /blog
 
 RUN go build .
 ARG MYSQL_PSW
-EXPOSE 80
+EXPOSE 8080
 CMD ["nohup", "sta./blogzrt_blog.sh"]
 
 
