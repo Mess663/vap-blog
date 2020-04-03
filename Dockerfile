@@ -12,12 +12,12 @@ FROM golang:latest
 
 COPY --from=noder /home/git/www /www
 
-WORKDIR /www/blog
+WORKDIR /www
 
-RUN go build .
+RUN go build ./blog
 ARG MYSQL_PSW
 EXPOSE 80
-CMD ["bash", "../start_blog.sh"]
+CMD ["bash", "start_blog.sh"]
 
 
 
