@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	// 判断系统输入
+	// 判断系统输入 4
 	var isDev bool
 	var psw string
 
