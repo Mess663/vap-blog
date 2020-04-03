@@ -10,10 +10,9 @@ RUN cd ./web \
 
 FROM golang:latest
 
-COPY --from=noder /home/git/www /www
-RUN mv /www/start_blog.sh /www/blog/start_blog.sh
+COPY --from=noder /home/git/www/blog /blog
 
-WORKDIR /www/blog
+WORKDIR /blog
 
 RUN go build .
 ARG MYSQL_PSW
