@@ -10,14 +10,14 @@ RUN cd ./web \
 
 FROM golang:latest
 
-COPY --from=noder /home/git/www/blog /blog
+COPY --from=noder /home/git/www /www
 
-WORKDIR /blog
+WORKDIR /www/blog
 
 RUN go build .
 ARG MYSQL_PSW
 EXPOSE 80
-CMD ["bash", "/home/start_blog.sh"]
+CMD ["bash", "/www/start_blog.sh"]
 
 
 
