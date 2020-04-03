@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	// 判断系统输入 45
+	// 判断系统输入
 	var isDev bool
 	var psw string
 
@@ -23,5 +23,5 @@ func main() {
 
 	router := server.NewRouter(isDev, psw)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":80", router))
 }
