@@ -78,7 +78,7 @@ module.exports = {
       },
       {
         // 图片格式正则
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif|eot|woff2?|ttf|svg)(\?.*)?$/,
         use: [
           {
             loader: 'url-loader',
@@ -88,9 +88,10 @@ module.exports = {
               limit: 10000,
               // 超出限制，创建的文件格式
               // build/images/[图片名].[hash].[图片格式]
-              name: 'images/[name].[hash:6].[ext]'
+              name: 'assert/[name].[hash:6].[ext]'
             }
-          }
+          },
+          'file-loader'
         ]
       },
       // {
