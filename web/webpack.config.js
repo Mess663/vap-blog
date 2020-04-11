@@ -18,13 +18,14 @@ const entry = {
   'article': 'src/pages/article/index.js',
   'admin': 'src/pages/admin/index.js'
 }
+const hashChoice = isPro ? 'chunkhash:6' : 'hash'
 
 module.exports = {
   entry,
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: `static/[name].[${isPro ? 'chunkhash:6' : 'hash'}].js`
+    filename: `static/[name].[${hashChoice}].js`
   },
 
   optimization: {
@@ -76,22 +77,41 @@ module.exports = {
         use: ['happypack/loader?id=happyBabel'],
         exclude: /node_modules/
       },
+      // {
+      //   test: /\.(html)$/,
+      //   use: {
+      //       loader: 'html-loader',
+      //       options: {
+      //         attrs: ['img:src'],
+      //       }
+      //   }
+      // },
       {
         // 图片格式正则
-        test: /\.(png|jpe?g|gif|eot|woff2?|ttf|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: [
           {
             loader: 'url-loader',
             // 配置 url-loader 的可选项
             options: {
+              esModule: false,
               // 限制 图片大小 10000B，小于限制会将图片转换为 base64格式
               limit: 10000,
               // 超出限制，创建的文件格式
-              // build/images/[图片名].[hash].[图片格式]
-              name: 'assert/[name].[hash:6].[ext]'
+              name: `static/img/[name].[${hashChoice}].[ext]`
             }
           },
-          'file-loader'
+        ]
+      },
+      {
+        test: /\.(eot|woff2?|ttf|svg)(\?.*)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: `static/font/[name].[${hashChoice}].[ext]`
+            }
+          }
         ]
       },
       // {
