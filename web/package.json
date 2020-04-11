@@ -40,8 +40,7 @@
     "url-loader": "^3.0.0",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
-    "html-webpack-inline-source-plugin": "0.0.10",
+    "webpack-dev-server": "^3.10.3"
   },
   "private": true,
   "browserslist": [
@@ -49,6 +48,7 @@
   ],
   "dependencies": {
     "axios": "^0.19.2",
+    "html-webpack-inline-source-plugin": "0.0.10",
     "jquery": "^3.4.1",
     "markdown": "^0.5.0",
     "showdown": "^1.9.1"
