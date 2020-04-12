@@ -5,6 +5,7 @@ COPY . /home/git/www/blog
 WORKDIR /home/git/www/blog
 
 RUN cd ./web \
+    && npm config set unsafe-perm true \
     && npm i \
     && npm run build
 
