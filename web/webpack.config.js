@@ -77,23 +77,15 @@ module.exports = {
         use: ['happypack/loader?id=happyBabel'],
         exclude: /node_modules/
       },
-      // {
-      //   test: /\.(html)$/,
-      //   use: {
-      //       loader: 'html-loader',
-      //       options: {
-      //         attrs: ['img:src'],
-      //       }
-      //   }
-      // },
       {
         // 图片格式正则
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
         use: [
           {
             loader: 'url-loader',
             // 配置 url-loader 的可选项
             options: {
+              // 这个选项默认开启，会使图片引入失败
               esModule: false,
               // 限制 图片大小 10000B，小于限制会将图片转换为 base64格式
               limit: 10000,
@@ -103,6 +95,14 @@ module.exports = {
           },
         ]
       },
+      // {
+      //   test: /\.html$/,
+      //   loader: "html-loader",
+      //   options: {
+      //       attrs: ['link:href'],
+      //       root: path.resolve(__dirname, 'src')
+      //   }
+      // },
       {
         test: /\.(eot|woff2?|ttf|svg)(\?.*)?$/,
         use: [
@@ -210,10 +210,7 @@ function getWebpackPlugins(entrys) {
   return entrys.map(item => new HtmlWebpackPlugin({
     filename: `${item}.html`,
     template: `src/pages/${item}/index.html`,
-    // 问题：很奇怪，加了vendor后，就可以在devServer上引入js了
-    // 解答：https://segmentfault.com/q/1010000022040381
     chunks: ['runtime', 'vendor', item],
-    favicon: 'https://raw.githubusercontent.com/Mess663/cloud-image/master/img/20200412110352.png',
     minify: isPro ? {
       removeAttributeQuotes: true,
       removeComments: true,
