@@ -109,7 +109,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: `static/font/[name].[${hashChoice}].[ext]`
+              name: `static/font/[name].[ext]`
             }
           }
         ]
