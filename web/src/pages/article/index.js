@@ -1,7 +1,6 @@
 import './index.less'
 
 import $ from 'jquery'
-import {markdown} from 'markdown';
+import marked from 'marked';
 
-$('article').html(markdown.toHTML($('.tem').text()))
-// document.querySelector('article').appendChild(parser.parseFromString(temHtml, "text/xml"))
+$('article').html(marked($('.tem').text()))
