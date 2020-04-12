@@ -213,7 +213,7 @@ function getWebpackPlugins(entrys) {
     // 问题：很奇怪，加了vendor后，就可以在devServer上引入js了
     // 解答：https://segmentfault.com/q/1010000022040381
     chunks: ['runtime', 'vendor', item],
-    favicon: 'src/images/WechatIMG420.png',
+    favicon: 'src/images/favicon.ico',
     minify: isPro ? {
       removeAttributeQuotes: true,
       removeComments: true,
