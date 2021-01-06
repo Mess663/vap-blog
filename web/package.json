@@ -47,7 +47,7 @@
     "defaults"
   ],
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "html-webpack-inline-source-plugin": "0.0.10",
     "jquery": "^3.5.0",
     "marked": "^0.8.2",
