@@ -50,7 +50,7 @@
     "axios": "^0.19.2",
     "html-webpack-inline-source-plugin": "0.0.10",
     "jquery": "^3.5.0",
-    "marked": "^0.8.2",
+    "marked": "^4.0.10",
     "showdown": "^1.9.1"
   }
 }
